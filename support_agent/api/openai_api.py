@@ -14,7 +14,7 @@ def validate_issue(doc, method):
     response = requests.post(
         url="https://openrouter.ai/api/v1/chat/completions",
         headers={
-            "Authorization": "Bearer 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",  # replace with valid key
+            "Authorization": "Bearer",  # replace with valid key
             "Content-Type": "application/json",
             "HTTP-Referer": "https://your-site.com",
             "X-Title": "ERPNext Helper",
