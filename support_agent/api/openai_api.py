@@ -1,60 +1,67 @@
 import frappe
 import requests
 import json
+from frappe.utils.password import get_decrypted_password
 
 def validate_issue(doc, method):
+    agent_settings = frappe.get_single("Support Agent Settings")
     prompt = f"""
     Subject: {doc.subject}
     Description: {doc.description}
 
-    Provide a short suggestion (max 100 words) based on ERPNext/Frappe documentation and general logic.
-    Avoid long reasoning, just give concise helpful guidance.
+    {agent_settings.context}
     """
 
-    response = requests.post(
-        url="https://openrouter.ai/api/v1/chat/completions",
-        headers={
-            "Authorization": "Bearer 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",  # replace with valid key
-            "Content-Type": "application/json",
-            "HTTP-Referer": "https://your-site.com",
-            "X-Title": "ERPNext Helper",
-        },
-        data=json.dumps({
-            "model": "deepseek/deepseek-chat-v3-0324:free",
-            "messages": [
-                {
-                    "role": "user",
-                    "content": prompt
-                }
-            ],
-            "max_tokens": 150,  # keep response short
-            "temperature": 0.7
-        })
+    # Decrypt the model_token field (assuming it's a Password field)
+    decrypted_token = get_decrypted_password(
+        "Support Agent Settings", agent_settings.name, "model_token"
     )
+    if agent_settings.disable == False:
+        response = requests.post(
+            url=agent_settings.model_url,
+            headers={
+                "Authorization": f"Bearer {decrypted_token}",
+                "Content-Type": "application/json",
+                "HTTP-Referer": "https://your-site.com",
+                "X-Title": "ERPNext Helper",
+            },
+            data=json.dumps({
+                "model": agent_settings.model_name,
+                "messages": [
+                    {
+                        "role": "user",
+                        "content": prompt
+                    }
+                ],
+                "max_tokens": agent_settings.max_token,  # keep response short
+                "temperature": agent_settings.temperature,  # creativity level
+            })
+        )
 
-    if response.status_code == 200:
-        try:
-            ai_text = (
-                response.json()
-                .get("choices")[0]
-                .get("message")
-                .get("content")
-                .strip()
-            )
+        if response.status_code == 200:
+            try:
+                ai_text = (
+                    response.json()
+                    .get("choices")[0]
+                    .get("message")
+                    .get("content")
+                    .strip()
+                )
 
-            # Format newlines first
-            formatted_ai_text = ai_text.replace("\n", "<br>")
+                # Format newlines first
+                formatted_ai_text = ai_text.replace("\n", "<br>")
 
-            # Wrap nicely for Text Editor field
-            formatted_text = (
-                "<div style='font-size:14px; line-height:1.6;'>"
-                "<p><b>AI Suggestion:</b></p>"
-                f"<div style='margin-left:10px;'>{formatted_ai_text}</div>"
-                "</div>"
-            )
+                # Wrap nicely for Text Editor field
+                formatted_text = (
+                    "<div style='font-size:14px; line-height:1.6;'>"
+                    "<p><b>AI Suggestion:</b></p><br>"
+                    f"<div style='margin-left:10px;'>{formatted_ai_text}</div>"
+                    "</div>"
+                )
 
-            doc.custom_ai_response = formatted_text  # your Text Editor field
-        except Exception:
-            doc.custom_ai_response = "<p><i>AI response could not be parsed.</i></p>"
-    else:
-        doc.custom_ai_response = f"<p><i>API error: {response.status_code}</i></p>"
+                doc.custom_ai_response = formatted_text  # your Text Editor field
+            except Exception as e:
+                frappe.throw(f"AI response could not be parsed: {e}")
+
+        else:
+            frappe.throw(f"API error: {response.status_code} - {response.text}")

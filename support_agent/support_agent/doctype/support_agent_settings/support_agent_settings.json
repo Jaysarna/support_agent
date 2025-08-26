@@ -1,0 +1,91 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2025-08-26 12:29:13.241873",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "disable",
+  "section_break_taqf",
+  "model_url",
+  "model_name",
+  "context",
+  "column_break_rdqd",
+  "model_token",
+  "max_token",
+  "temperature"
+ ],
+ "fields": [
+  {
+   "fieldname": "model_url",
+   "fieldtype": "Data",
+   "label": "Model URL"
+  },
+  {
+   "fieldname": "column_break_rdqd",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "model_token",
+   "fieldtype": "Password",
+   "label": "Model Token"
+  },
+  {
+   "fieldname": "model_name",
+   "fieldtype": "Data",
+   "label": "Model Name"
+  },
+  {
+   "default": "120",
+   "fieldname": "max_token",
+   "fieldtype": "Int",
+   "label": "Max Token"
+  },
+  {
+   "fieldname": "temperature",
+   "fieldtype": "Float",
+   "label": "Temperature"
+  },
+  {
+   "fieldname": "context",
+   "fieldtype": "Small Text",
+   "label": "Context"
+  },
+  {
+   "bold": 1,
+   "default": "1",
+   "fieldname": "disable",
+   "fieldtype": "Check",
+   "label": "Disable"
+  },
+  {
+   "fieldname": "section_break_taqf",
+   "fieldtype": "Section Break"
+  }
+ ],
+ "grid_page_length": 50,
+ "index_web_pages_for_search": 1,
+ "issingle": 1,
+ "links": [],
+ "modified": "2025-08-26 14:31:56.160216",
+ "modified_by": "Administrator",
+ "module": "Support Agent",
+ "name": "Support Agent Settings",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "print": 1,
+   "read": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "row_format": "Dynamic",
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}
