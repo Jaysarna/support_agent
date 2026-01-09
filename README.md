@@ -1,3 +1,5 @@
+This project is a Python-based tool designed to help streamline customer support workflows. It focuses on automating common support tasks and integrating easily with existing ticketing systems. It was a fun project to build to improve efficiency for support teams.
+
 ### Support Agent
 
 making use of AI api answering support issues
