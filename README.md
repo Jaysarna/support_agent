@@ -4,6 +4,10 @@ This project is a Python-based tool designed to help streamline customer support
 
 making use of AI api answering support issues
 
+##Demo
+
+https://github.com/user-attachments/assets/1f4df87f-b60d-422b-8b81-4c02fc378954
+
 ### Installation
 
 You can install this app using the [bench](https://github.com/frappe/bench) CLI:
@@ -35,8 +39,5 @@ Pre-commit is configured to use the following tools for checking and formatting 
 mit
 
 
-##Demo
-
-https://github.com/user-attachments/assets/1f4df87f-b60d-422b-8b81-4c02fc378954
 
 
