@@ -2,7 +2,7 @@ This project is a Python-based tool designed to help streamline customer support
 
 ### Support Agent
 
-making use of AI api answering support issues
+making use of AI api answering support issues and guide ticket
 
 ##Demo
 
